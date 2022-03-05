@@ -21,7 +21,7 @@
 
   </body>
   <script>
-    textarea = document.getElementById('code');
+    var textarea = document.getElementById('code');
     textarea.style.tabSize = 4;
     textarea.addEventListener('keydown', function(e) {
       if (e.key == 'Tab') {
@@ -38,6 +38,8 @@
           this.selectionEnd = start + 1;
       }
     });
+
+    textarea.addEventListener('input', draw);
     
     function log(text) {
       document.getElementById("log").innerHTML = text.replace(/\n\r?/g, '<br/>');
@@ -62,7 +64,7 @@
     var last_working_code;
     canvas.height=750;
     canvas.width=window.innerWidth/100*45;
-
-    setInterval(draw, 50);
+    draw();
+    //setInterval(draw, 50);
   </script>
 </html>
