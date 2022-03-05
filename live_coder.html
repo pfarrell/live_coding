@@ -48,19 +48,17 @@
     function draw() {
       var code = document.getElementById("code").value;
       try {
+        log("");
         eval(code);
+        last_working_code = code;
       }catch(error) {
         log("<div>" + error + "</div>using last working code<div>" + code + "</div>");
         eval(last_working_code);
       }
-      last_working_code = code;
-      log("");
-      time +=1;
     }
 
     var canvas = document.querySelector('canvas');
     var ctx = canvas.getContext('2d');
-    var time = 0;
     var last_working_code;
     canvas.height=750;
     canvas.width=window.innerWidth/100*45;
