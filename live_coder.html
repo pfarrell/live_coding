@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      html, body { overflow: hidden; display: inline;}
+      textarea { width: 90%; height: 75vh; display: inline; }
+      .row {display: flex; grid-auto-flow: column; }
+      .col {flex-basis: 50%;}
+      #log { text-size:
+    </style>
+
+  </head>
+  <body>
+    <div class="row">
+      <div class="col"><canvas id="view"></canvas></div>
+      <div class="col">
+        <textarea rows=50 id="code"></textarea>
+        <p id="log"></p>
+      </div>
+    </div>
+
+  </body>
+  <script>
+    textarea = document.getElementById('code');
+    textarea.style.tabSize = 4;
+    textarea.addEventListener('keydown', function(e) {
+      if (e.key == 'Tab') {
+        e.preventDefault();
+        var start = this.selectionStart;
+        var end = this.selectionEnd;
+
+        // set textarea value to: text before caret + tab + text after caret
+        this.value = this.value.substring(0, start) +
+          "\t" + this.value.substring(end);
+
+        // put caret at right position again
+        this.selectionStart =
+          this.selectionEnd = start + 1;
+      }
+    });
+    
+    function log(text) {
+      document.getElementById("log").innerHTML = text.replace(/\n\r?/g, '<br/>');
+    }
+
+    function draw() {
+      var code = document.getElementById("code").value;
+      try {
+        eval(code);
+      }catch(error) {
+        log("<div>" + error + "</div>using last working code<div>" + code + "</div>");
+        eval(last_working_code);
+      }
+      last_working_code = code;
+      log("");
+      time +=1;
+    }
+
+    var canvas = document.querySelector('canvas');
+    var ctx = canvas.getContext('2d');
+    var time = 0;
+    var last_working_code;
+    canvas.height=750;
+    canvas.width=window.innerWidth/100*45;
+
+    setInterval(draw, 50);
+  </script>
+</html>
