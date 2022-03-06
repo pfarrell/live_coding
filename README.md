@@ -33,6 +33,7 @@ That being said, those demos had such a high <gasp> factor and I can't help but 
 a shot at figuring out how to duplicate what he did in those tools.
 
 ## Part 1: the Tree Demo
+![Picture of Tree Demo from Bret Victor's talk, Inventing On Principal](/img/bret_victor_tree_demo.jpg)
 
 This demo shows off an IDE which has an immediate connection to what is being rendered.
 Bret demonstrates creating a scene in a JavaScript canvas.
