@@ -126,6 +126,6 @@ function lerp(a, b, distance) {
   return a + (b - a) * distance;
 }/* Context: {"context":{"prescript":"","postscript":""},"customInstances":[]} */
 
-canvas.width=800;
-canvas.height=800;
+canvas.width=400;
+canvas.height=400;
 drawScene(canvas);

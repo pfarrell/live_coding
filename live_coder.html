@@ -51,7 +51,7 @@
         eval(code);
         last_working_code = code;
       }catch(error) {
-        log("<div>" + error + "</div>");
+        log("<div>line " + error.lineNumber+ ": " + error + "</div>");
         eval(last_working_code);
       }
     }
