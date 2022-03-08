@@ -6,9 +6,8 @@
       textarea { width: 90%; height: 75vh; display: inline; }
       .row {display: flex; grid-auto-flow: column; }
       .col {flex-basis: 50%;}
-      #log { text-size:
+      #log { font-family: "Lucida Console", "Courier New", monospace; font-size: 0.875em; }
     </style>
-
   </head>
   <body>
     <div class="row">
@@ -52,7 +51,7 @@
         eval(code);
         last_working_code = code;
       }catch(error) {
-        log("<div>" + error + "</div>using last working code<div>" + code + "</div>");
+        log("<div>" + error + "</div>");
         eval(last_working_code);
       }
     }
