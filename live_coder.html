@@ -6,7 +6,9 @@
       textarea { width: 90%; height: 75vh; display: inline; }
       .row {display: flex; grid-auto-flow: column; }
       .col {flex-basis: 50%;}
-      .dot {height: 25px; width: 25px; border-radius: 50%; display: inline-block; background-color: 'red';}
+      .dot {height: 15px; width: 15px; border-radius: 50%; display: inline-block; }
+      .red { background-color: red;}
+      .green { background-color: green;}
       #log { font-family: "Lucida Console", "Courier New", monospace; font-size: 0.875em; }
     </style>
     <script src="lib/codemirror.js"></script>
@@ -61,6 +63,7 @@
     var canvas = document.querySelector('canvas');
     var ctx = canvas.getContext('2d');
     var last_working_code;
+    var time=0;
     canvas.height=750;
     canvas.width=window.innerWidth/100*45;
     draw();
