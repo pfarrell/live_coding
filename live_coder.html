@@ -6,8 +6,17 @@
       textarea { width: 90%; height: 75vh; display: inline; }
       .row {display: flex; grid-auto-flow: column; }
       .col {flex-basis: 50%;}
+      .dot {height: 15px; width: 15px; border-radius: 50%; display: inline-block; }
+      .red { background-color: red;}
+      .green { background-color: green;}
       #log { font-family: "Lucida Console", "Courier New", monospace; font-size: 0.875em; }
     </style>
+    <script src="lib/codemirror.js"></script>
+    <link rel="stylesheet" href="lib/codemirror.css">
+    <script src="lib/mode/javascript/javascript.js"></script>
+    <script>
+    </script>
+</script>
   </head>
   <body>
     <div class="row">
@@ -19,39 +28,34 @@
     </div>
 
   </body>
-  <script>
+  <script language="JavaScript">
     var textarea = document.getElementById('code');
-    textarea.style.tabSize = 4;
-    textarea.addEventListener('keydown', function(e) {
-      if (e.key == 'Tab') {
-        e.preventDefault();
-        var start = this.selectionStart;
-        var end = this.selectionEnd;
+    var myCodeMirror = CodeMirror.fromTextArea(textarea, {
+          "mode": "javascript",
+          "lineNumbers": true,
+          "tabSize": 4,
+          "smartIndent": true,
+        });
 
-        // set textarea value to: text before caret + tab + text after caret
-        this.value = this.value.substring(0, start) +
-          "\t" + this.value.substring(end);
+    myCodeMirror.on("change", draw);
 
-        // put caret at right position again
-        this.selectionStart =
-          this.selectionEnd = start + 1;
-      }
-    });
-
-    textarea.addEventListener('input', draw);
-    
     function log(text) {
       document.getElementById("log").innerHTML = text.replace(/\n\r?/g, '<br/>');
     }
 
+    function working(isWorking) {
+      var color = isWorking ? "green" : "red";
+      return '<span class="dot ' + color + '"></span>' 
+    }
+
     function draw() {
-      var code = document.getElementById("code").value;
+      var code = myCodeMirror.getValue();
       try {
-        log("");
+        log(working(true));
         eval(code);
         last_working_code = code;
       }catch(error) {
-        log("<div>line " + error.lineNumber+ ": " + error + "</div>");
+        log("<div>" + working(false) + " line " + error.lineNumber+ ": " + error + "</div>");
         eval(last_working_code);
       }
     }
@@ -59,9 +63,11 @@
     var canvas = document.querySelector('canvas');
     var ctx = canvas.getContext('2d');
     var last_working_code;
+    var time=0;
     canvas.height=750;
     canvas.width=window.innerWidth/100*45;
     draw();
+
     //setInterval(draw, 50);
   </script>
 </html>
