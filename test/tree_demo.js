@@ -1,14 +1,14 @@
 // From https://github.com/LivelyKernel/lively4-core/blob/e3c79acdd40794248dee1f4deb53eb8933aa5e89/src/babylonian-programming-editor/demos/presentation/03_canvas_simple.js
-var ctx, canvasWidth, canvasHeight;
+ var ctx, canvasWidth, canvasHeight;
 
 // Scene
 function drawScene(canvas) {
 	ctx = canvas.getContext('2d');
 	// extendCanvasContext(ctx);
-	
+
 	canvasWidth = parseInt(canvas.getAttribute("width"));
 	canvasHeight = parseInt(canvas.getAttribute("height"));
-	
+
 	drawSky();
 	drawMountains();
 	drawTree();
@@ -21,10 +21,10 @@ function drawSky() {
 	var gradient = ctx.createLinearGradient(0, 0, 0, canvasHeight);
 	gradient.addColorStop(0, "#b4e0fe");
 	gradient.addColorStop(1, "#d3f8ff");
-	
+
 	ctx.fillStyle = gradient;
 	ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-	
+
 	ctx.restore();
 }
 
@@ -62,13 +62,13 @@ function drawTree() {
 
 	//resetRandom();
 	drawBranches(0, -Math.PI/2, canvasWidth/2, canvasHeight, 30, blossomPoints);
-	
+
 	//resetRandom();
 	drawBlossoms(blossomPoints)
 }
 
 // Branches
-function /*slider:*/drawBranches/*{}*/ (i, angle, /*probe:*/x/*{}*/, /*probe:*/y/*{}*/, width, blossomPoints) {
+function drawBranches(i, angle, x, y, width, blossomPoints) {
 	ctx.save();
 
 	var length = random(30, 50) * (1 - i/20);
@@ -106,7 +106,7 @@ function drawBlossoms(blossomPoints) {
 		for (var j = 0; j < 16; j++) {
 			var x = lerp(p[0], p[2], random(0, 1)) + random(-10, 10);
 			var y = lerp(p[1], p[3], random(0, 1)) + random(-10, 10);
-			
+
       ctx.beginPath();
 			ctx.fillStyle = colors[Math.floor(random(0, colors.length))];
 			ctx.arc(x, y, random(2, 5), 0, Math.PI*2, true);
@@ -126,6 +126,6 @@ function lerp(a, b, distance) {
   return a + (b - a) * distance;
 }/* Context: {"context":{"prescript":"","postscript":""},"customInstances":[]} */
 
-canvas.width=400;
-canvas.height=400;
+canvas.width=600;
+canvas.height=600;
 drawScene(canvas);

@@ -5,14 +5,17 @@
       html, body { overflow: hidden; display: inline;}
       textarea { width: 90%; height: 75vh; display: inline; }
       .row {display: flex; grid-auto-flow: column; }
-      .col {flex-basis: 50%;}
+      .col {width:600px}
       .dot {height: 15px; width: 15px; border-radius: 50%; display: inline-block; }
       .red { background-color: red;}
       .green { background-color: green;}
       #log { font-family: "Lucida Console", "Courier New", monospace; font-size: 0.875em; }
     </style>
     <script src="lib/codemirror.js"></script>
+    <script src="lib/addon/hint/show-hint.js"></script>
     <link rel="stylesheet" href="lib/codemirror.css">
+    <script src="lib/addon/hint/show-hint.js"></script>
+    <script src="lib/addon/hint/javascript-hint.js"></script>
     <script src="lib/mode/javascript/javascript.js"></script>
     <script>
     </script>
@@ -22,7 +25,7 @@
     <div class="row">
       <div class="col"><canvas id="view"></canvas></div>
       <div class="col">
-        <textarea rows=50 id="code"></textarea>
+        <textarea id="code"></textarea>
         <p id="log"></p>
       </div>
     </div>
@@ -31,11 +34,19 @@
   <script language="JavaScript">
     var textarea = document.getElementById('code');
     var myCodeMirror = CodeMirror.fromTextArea(textarea, {
-          "mode": "javascript",
-          "lineNumbers": true,
-          "tabSize": 4,
-          "smartIndent": true,
+          lineNumbers: true,
+          tabSize: 4,
+          smartIndent: true,
+          extraKeys: {
+                "Ctrl-Space": "autocomplete"
+          },
+          mode: {
+                name: "javascript",
+                globalVars: true,
+          }
+                
         });
+    myCodeMirror.setSize("600px", "600px");
 
     myCodeMirror.on("change", draw);
 
@@ -64,10 +75,11 @@
     var ctx = canvas.getContext('2d');
     var last_working_code;
     var time=0;
-    canvas.height=750;
-    canvas.width=window.innerWidth/100*45;
+    canvas.height=600;
+    canvas.width=600;
     draw();
 
     //setInterval(draw, 50);
   </script>
 </html>
+
