@@ -14,7 +14,7 @@
     <script src="lib/codemirror.js"></script>
     <script src="lib/addon/hint/show-hint.js"></script>
     <link rel="stylesheet" href="lib/codemirror.css">
-    <script src="lib/addon/hint/show-hint.js"></script>
+    <link rel="stylesheet" src="lib/addon/hint/show-hint.css"></script>
     <script src="lib/addon/hint/javascript-hint.js"></script>
     <script src="lib/mode/javascript/javascript.js"></script>
     <script>
@@ -34,11 +34,12 @@
   <script language="JavaScript">
     var textarea = document.getElementById('code');
     var myCodeMirror = CodeMirror.fromTextArea(textarea, {
+          autofocus: true,
           lineNumbers: true,
           tabSize: 4,
           smartIndent: true,
           extraKeys: {
-                "Ctrl-Space": "autocomplete"
+                "Ctrl-Space": "autocomplete",
           },
           mode: {
                 name: "javascript",
@@ -47,7 +48,6 @@
                 
         });
     myCodeMirror.setSize("600px", "600px");
-
     myCodeMirror.on("change", draw);
 
     function log(text) {
@@ -59,7 +59,19 @@
       return '<span class="dot ' + color + '"></span>' 
     }
 
+    document.addEventListener('keydown', logKey);
+
+    function logKey(e) {
+      switch(e.code) {
+        case "ControlLeft":
+        case "ControlRight":
+          console.log(e.code);
+        }
+    }
+
+
     function draw() {
+      ctx.clearRect(0,0,canvas.width,canvas.height)
       var code = myCodeMirror.getValue();
       try {
         log(working(true));
@@ -69,6 +81,10 @@
         log("<div>" + working(false) + " line " + error.lineNumber+ ": " + error + "</div>");
         eval(last_working_code);
       }
+    }
+
+    function toggleSlider() {
+      alert("hello");
     }
 
     var canvas = document.querySelector('canvas');
