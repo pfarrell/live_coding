@@ -17,6 +17,7 @@
     <link rel="stylesheet" src="lib/addon/hint/show-hint.css"></script>
     <script src="lib/addon/hint/javascript-hint.js"></script>
     <script src="lib/mode/javascript/javascript.js"></script>
+    <script src="lib/addon/selection/mark-selection.js"></script>
     <script>
     </script>
 </script>
@@ -62,10 +63,15 @@
     document.addEventListener('keydown', logKey);
 
     function logKey(e) {
+      //console.log(e.code);
       switch(e.code) {
         case "ControlLeft":
+
+          toggleSlider();
+          break;
         case "ControlRight":
-          console.log(e.code);
+          removeElement();
+          break;
         }
     }
 
@@ -83,8 +89,23 @@
       }
     }
 
+    var added_elements = [];
     function toggleSlider() {
-      alert("hello");
+      if(added_elements.length == 0) {
+        let range = document.createElement('input');
+        range.type = 'range'
+        range.style = 'position:absolute;right:950px;top:650px;';
+        range.min="0";
+        range.max="100"
+        range.value="60"
+        added_elements.push(range);
+        document.body.appendChild(range);
+      }
+    }
+
+    function removeElement() {
+      var elem = added_elements.pop();
+      if(elem) { document.body.removeChild(elem); }
     }
 
     var canvas = document.querySelector('canvas');
