@@ -39,6 +39,7 @@
           lineNumbers: true,
           tabSize: 4,
           smartIndent: true,
+          styleSelectedText: true,
           extraKeys: {
                 "Ctrl-Space": "autocomplete",
           },
@@ -92,15 +93,31 @@
     var added_elements = [];
     function toggleSlider() {
       if(added_elements.length == 0) {
-        let range = document.createElement('input');
-        range.type = 'range'
-        range.style = 'position:absolute;right:950px;top:650px;';
-        range.min="0";
-        range.max="100"
-        range.value="60"
-        added_elements.push(range);
-        document.body.appendChild(range);
+        let highlit = document.getElementsByClassName("CodeMirror-selectedtext");
+        if(highlit.length > 0) {
+          var origValue = myCodeMirror.getSelection();
+          if(!isNaN(origValue)) {
+            origValue = parseInt(origValue);
+            let bumper = origValue * 3;
+            let range = document.createElement('input');
+            range.id = 'myRange';
+            range.type = 'range';
+            range.style = 'position:absolute;right:950px;top:650px;';
+            range.min=origValue - bumper;
+            range.max=origValue + bumper;
+            range.value=origValue;
+            range.addEventListener('input', updateInt);
+            added_elements.push(range);
+            document.body.appendChild(range);
+          }
+        }
       }
+    }
+    
+    function updateInt(elem) {
+      var range = document.getElementById("myRange");
+      var elem = document.getElementsByClassName("CodeMirror-selectedtext")[0];
+      myCodeMirror.replaceSelection(range.value);      
     }
 
     function removeElement() {
