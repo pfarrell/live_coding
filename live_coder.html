@@ -94,6 +94,7 @@
     function toggleSlider() {
       if(added_elements.length == 0) {
         let highlit = document.getElementsByClassName("CodeMirror-selectedtext");
+        let origCursor = myCodeMirror.getCursor();
         if(highlit.length > 0) {
           var origValue = myCodeMirror.getSelection();
           if(!isNaN(origValue)) {
@@ -114,10 +115,12 @@
       }
     }
     
-    function updateInt(elem) {
+    function updateInt() {
       var range = document.getElementById("myRange");
       var elem = document.getElementsByClassName("CodeMirror-selectedtext")[0];
+      var origCursor = myCodeMirror.getCursor();
       myCodeMirror.replaceSelection(range.value);      
+      myCodeMirror.setSelection({line: origCursor.line, ch: origcursor.ch}, {line: origCursor.line, ch: origCursor.ch - range.value.length});
     }
 
     function removeElement() {
