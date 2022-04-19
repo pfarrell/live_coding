@@ -17,7 +17,6 @@
     <link rel="stylesheet" src="lib/addon/hint/show-hint.css"></script>
     <script src="lib/addon/hint/javascript-hint.js"></script>
     <script src="lib/mode/javascript/javascript.js"></script>
-    <script src="lib/addon/selection/mark-selection.js"></script>
     <script>
     </script>
 </script>
@@ -47,7 +46,7 @@
                 name: "javascript",
                 globalVars: true,
           }
-                
+
         });
     myCodeMirror.setSize("600px", "600px");
     myCodeMirror.on("change", draw);
@@ -58,7 +57,7 @@
 
     function working(isWorking) {
       var color = isWorking ? "green" : "red";
-      return '<span class="dot ' + color + '"></span>' 
+      return '<span class="dot ' + color + '"></span>'
     }
 
     document.addEventListener('keydown', logKey);
@@ -93,39 +92,58 @@
     var added_elements = [];
     function toggleSlider() {
       if(added_elements.length == 0) {
-        let highlit = document.getElementsByClassName("CodeMirror-selectedtext");
+        let highlit = myCodeMirror.getSelection();
         let origCursor = myCodeMirror.getCursor();
         if(highlit.length > 0) {
-          var origValue = myCodeMirror.getSelection();
-          if(!isNaN(origValue)) {
-            origValue = parseInt(origValue);
-            let bumper = origValue * 3;
+          if(!isNaN(highlit)) {
+            let origValue = parseInt(highlit);
+            let bumper = Math.floor(origValue * 1.5);
             let range = document.createElement('input');
             range.id = 'myRange';
             range.type = 'range';
             range.style = 'position:absolute;right:950px;top:650px;';
             range.min=origValue - bumper;
             range.max=origValue + bumper;
+            range.step=1;
             range.value=origValue;
             range.addEventListener('input', updateInt);
             added_elements.push(range);
             document.body.appendChild(range);
           }
         }
+      } else {
+        removeElement();
       }
     }
-    
+
+    document.addEventListener('select', onSelect);
+
+    var origCursor = null;
+    var lastCursorPos = null;
+    function onSelect(evt) {
+      var selectedLength = myCodeMirror.getSelection().length;
+      // calculate direction by getting text range and comparing to getSelection
+      var cu = myCodeMirror.getCursor();
+      origCursor = cu;
+      lastCursorPos = cu.ch;
+    }
+
     function updateInt() {
       var range = document.getElementById("myRange");
-      var elem = document.getElementsByClassName("CodeMirror-selectedtext")[0];
-      var origCursor = myCodeMirror.getCursor();
-      myCodeMirror.replaceSelection(range.value);      
-      myCodeMirror.setSelection({line: origCursor.line, ch: origcursor.ch}, {line: origCursor.line, ch: origCursor.ch - range.value.length});
+      prevSel = myCodeMirror.getSelection();
+      myCodeMirror.replaceSelection(range.value);
+      var st = lastCursorPos - prevSel.toString().length;
+      var en = st + range.value.toString().length;
+      myCodeMirror.setSelection({line: origCursor.line, ch: st}, {line: origCursor.line, ch: en});
+      lastCursorPos = en;
     }
 
     function removeElement() {
       var elem = added_elements.pop();
-      if(elem) { document.body.removeChild(elem); }
+      if(elem) {
+        document.body.removeChild(elem);
+        origCursor = null;
+      }
     }
 
     var canvas = document.querySelector('canvas');
