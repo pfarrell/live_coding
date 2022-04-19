@@ -7,7 +7,7 @@
       textarea { width: 90%; height: 75vh; display: inline; }
       .row {display: flex; grid-auto-flow: column; }
       .col {width:600px}
-      .dot {height: 15px; width: 15px; border-radius: 50%; display: inline-block; }
+      .dot {height: 10px; width: 10px; border-radius: 50%; display: inline-block; }
       .red { background-color: red;}
       .green { background-color: green;}
       #log { font-family: "Lucida Console", "Courier New", monospace; font-size: 0.875em; }
@@ -71,13 +71,40 @@
       //console.log(e.code);
       switch(e.code) {
         case "ControlLeft":
-
-          toggleSlider();
+          if(added_elements.length == 0) {
+            let selText = myCodeMirror.getSelection();
+            if(selText) {
+              var func = determineSlider();
+              if(func) {
+                func(selText);
+              }
+            }
+          } else {
+            removeElement();
+          }
           break;
         case "ControlRight":
           removeElement();
           break;
         }
+    }
+
+    function determineSlider() {
+      let selText = myCodeMirror.getSelection();
+      if(selText.length == 0) {
+        return null;
+      } else if(isColor(selText)) {
+        return toggleColorPicker;
+      } else if(!isNaN(selText)) {
+        return toggleSlider;
+      } else {
+        return null;
+      }
+    }
+
+    function isColor(str) {
+      const pat = /[a-e0-9]{6}/;
+      return str.match(pat);
     }
 
 
@@ -95,29 +122,30 @@
     }
 
     var added_elements = [];
-    function toggleSlider() {
-      if(added_elements.length == 0) {
-        let highlit = myCodeMirror.getSelection();
-        let origCursor = myCodeMirror.getCursor();
-        if(highlit.length > 0) {
-          if(!isNaN(highlit)) {
-            let origValue = parseInt(highlit);
-            let bumper = Math.floor(origValue * 1.5);
-            let range = document.createElement('input');
-            range.id = 'myRange';
-            range.type = 'range';
-            range.style = 'position:absolute;right:950px;top:650px;';
-            range.min=origValue - bumper;
-            range.max=origValue + bumper;
-            range.step=1;
-            range.value=origValue;
-            range.addEventListener('input', updateInt);
-            added_elements.push(range);
-            document.body.appendChild(range);
-          }
+
+
+    function toggleColorPicker(highlit) {
+      let origCursor = myCodeMirror.getCursor();
+    }
+
+    function toggleSlider(highlit) {
+      let origCursor = myCodeMirror.getCursor();
+      if(highlit.length > 0) {
+        if(!isNaN(highlit)) {
+          let origValue = parseInt(highlit);
+          let bumper = Math.floor(origValue * 1.5);
+          let range = document.createElement('input');
+          range.id = 'myRange';
+          range.type = 'range';
+          range.style = 'position:absolute;right:950px;top:650px;';
+          range.min=origValue - bumper;
+          range.max=origValue + bumper;
+          range.step=1;
+          range.value=origValue;
+          range.addEventListener('input', updateInt);
+          added_elements.push(range);
+          document.body.appendChild(range);
         }
-      } else {
-        removeElement();
       }
     }
 
@@ -125,6 +153,7 @@
 
     var origCursor = null;
     var lastCursorPos = null;
+
     function onSelect(evt) {
       var selectedLength = myCodeMirror.getSelection().length;
       // calculate direction by getting text range and comparing to getSelection
