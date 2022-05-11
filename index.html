@@ -103,7 +103,7 @@
     }
 
     function isColor(str) {
-      const pat = /[a-e0-9]{6}/;
+      const pat = /[a-f0-9]{6}/;
       return str.match(pat);
     }
 
@@ -126,6 +126,13 @@
 
     function toggleColorPicker(highlit) {
       let origCursor = myCodeMirror.getCursor();
+      let picker = document.createElement('input');
+      picker.id = "myPicker";
+      picker.type = "color";
+      picker.style = 'position:absolute;right:950px;top:650px;';
+      picker.addEventListener('input', updateColor);
+      added_elements.push(picker);
+      document.body.appendChild(picker);
     }
 
     function toggleSlider(highlit) {
@@ -149,6 +156,10 @@
       }
     }
 
+    function updateColor(e) {
+      log(e.target.value);
+    }
+
     document.addEventListener('select', onSelect);
 
     var origCursor = null;
@@ -162,12 +173,11 @@
       lastCursorPos = cu.ch;
     }
 
-    function updateInt() {
-      var range = document.getElementById("myRange");
+    function updateInt(e) {
       prevSel = myCodeMirror.getSelection();
-      myCodeMirror.replaceSelection(range.value);
+      myCodeMirror.replaceSelection(e.target.value);
       var st = lastCursorPos - prevSel.toString().length;
-      var en = st + range.value.toString().length;
+      var en = st + e.target.value.toString().length;
       myCodeMirror.setSelection({line: origCursor.line, ch: st}, {line: origCursor.line, ch: en});
       lastCursorPos = en;
     }
