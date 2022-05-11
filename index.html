@@ -2,6 +2,7 @@
 <html>
   <head>
     <style>
+      body { margin: 0px; }
       html, body { overflow: hidden; display: inline;}
       textarea { width: 90%; height: 75vh; display: inline; }
       .row {display: flex; grid-auto-flow: column; }
@@ -23,9 +24,13 @@
   </head>
   <body>
     <div class="row">
-      <div class="col"><canvas id="view"></canvas></div>
+      <div class="col"><canvas id="view"></canvas>
+      </div>
       <div class="col">
         <textarea id="code"></textarea>
+        <p>
+        <ul><li>Highlight a number.  Hit left-ctrl to toggle data slider on or off.</li></ul>
+        </p>
         <p id="log"></p>
       </div>
     </div>
@@ -146,12 +151,27 @@
       }
     }
 
+    function getDefaultText(elem) {
+      var request = new XMLHttpRequest();
+      request.open('GET', 'https://raw.githubusercontent.com/pfarrell/live_coding/main/test/tree_demo.js', true);
+      request.send(null);
+      request.onreadystatechange = function () {
+          if (request.readyState === 4 && request.status === 200) {
+              var type = request.getResponseHeader('Content-Type');
+              if (type.indexOf("text") !== 1) {
+                  elem.setValue(request.responseText);
+              }
+          }
+      }
+    }
+
     var canvas = document.querySelector('canvas');
     var ctx = canvas.getContext('2d');
     var last_working_code;
     var time=0;
     canvas.height=600;
     canvas.width=600;
+    getDefaultText(myCodeMirror);
     draw();
 
     //setInterval(draw, 50);
