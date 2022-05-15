@@ -83,10 +83,22 @@
             removeElement();
           }
           break;
-        case "ControlRight":
+        case "AltRight":
+        case "AltLeft":
+          codeToImage();
+          break;
+        case "Escape":
           removeElement();
           break;
         }
+    }
+
+    var codeToImageMode = false;
+    function codeToImage() {
+      codeToImageMode = !codeToImageMode;
+      if(codeToImageMode) {
+        log(myCodeMirror.getSelection());
+      }
     }
 
     function determineSlider() {
