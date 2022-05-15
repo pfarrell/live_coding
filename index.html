@@ -65,11 +65,11 @@
       return '<span class="dot ' + color + '"></span>'
     }
 
-    document.addEventListener('keydown', logKey);
+    document.addEventListener('keydown', keyPressed);
 
-    function logKey(e) {
-      //console.log(e.code);
+    function keyPressed(e) {
       switch(e.code) {
+        case "ControlRight":
         case "ControlLeft":
           if(added_elements.length == 0) {
             let selText = myCodeMirror.getSelection();
