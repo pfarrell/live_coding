@@ -103,7 +103,7 @@
     }
 
     function isColor(str) {
-      const pat = /[a-f0-9]{6}/;
+      const pat = /^#?[a-f0-9]{6}$/;
       return str.match(pat);
     }
 
