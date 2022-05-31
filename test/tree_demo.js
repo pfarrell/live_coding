@@ -98,7 +98,7 @@ function drawBranches(i, angle, x, y, width, blossomPoints) {
 
 // Blossoms
 function drawBlossoms(blossomPoints) {
-  var colors = ["#f5ceea", "te8d9e4", "#f7c9f3", "tebbdcc"];
+  var colors = ["#f5ceea", "#e8d9e4", "#f7c9f3", "#ebbdcc"];
   ctx.globalAlpha = 0.60;
 
   for (var i = 0; i < blossomPoints.length; i++) {

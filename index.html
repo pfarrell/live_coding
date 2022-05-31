@@ -48,13 +48,17 @@
                 "Ctrl-Space": "autocomplete",
           },
           mode: {
-                name: "javascript",
-                globalVars: true,
+            name: "javascript",
+            globalVars: true,
           }
 
         });
-    myCodeMirror.setSize("600px", "600px");
-    myCodeMirror.on("change", draw);
+      myCodeMirror.setSize("600px", "600px");
+      myCodeMirror.on("change", draw);
+      var codeToImageMode = false;
+      var added_elements = [];
+
+      document.addEventListener('keydown', keyPressed);
 
     function log(text) {
       document.getElementById("log").innerHTML = text.replace(/\n\r?/g, '<br/>');
@@ -65,9 +69,9 @@
       return '<span class="dot ' + color + '"></span>'
     }
 
-    document.addEventListener('keydown', keyPressed);
 
     function keyPressed(e) {
+      log(e.code);
       switch(e.code) {
         case "ControlRight":
         case "ControlLeft":
@@ -93,11 +97,13 @@
         }
     }
 
-    var codeToImageMode = false;
     function codeToImage() {
       codeToImageMode = !codeToImageMode;
       if(codeToImageMode) {
+        document.body.style.cursor = "url(img/mag.png) 4 12, auto";
         log(myCodeMirror.getSelection());
+      } else {
+        document.body.style.cursor = "auto";
       }
     }
 
@@ -133,7 +139,6 @@
       }
     }
 
-    var added_elements = [];
 
 
     function toggleColorPicker(highlit) {
@@ -174,8 +179,6 @@
 
     document.addEventListener('select', onSelect);
 
-    var origCursor = null;
-    var lastCursorPos = null;
 
     function onSelect(evt) {
       var selectedLength = myCodeMirror.getSelection().length;
